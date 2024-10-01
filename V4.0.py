@@ -1,4 +1,5 @@
 import PySimpleGUI as sg
+from pathlib import Path
 import subprocess
 import json
 import sys
@@ -13,12 +14,19 @@ if sys.platform.startswith('win'):
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(u'CompanyName.ProductName.SubProduct.VersionInformati'
                                                                   u'on')
 
+# Função para retornar o diretório onde o arquivo está
+def get_directory_location(filename):
+    return Path(filename).resolve().parent
+
+# Example usage
+file_location = get_directory_location('K-Miner')
+
 
 def trex():
     user = os.getlogin()
     valores['c2'].lower()
     with open(f'trex.bat', 'w+') as myBat:
-        myBat.write(fr'''C:\Users\{user}\Desktop\Trex\t-rex.exe -a {valores['c2']} -o {valores['server']} -u {valores['wallet']}.{valores['miner']} -p x
+        myBat.write(fr'''{file_location}\t-rex.exe -a {valores['c2']} -o {valores['server']} -u {valores['wallet']}.{valores['miner']} -p x
         pause ''')
     return subprocess.Popen("start {}".format('trex.bat'), shell=True)
 
@@ -37,7 +45,7 @@ def lol_miner():
     elif valores['c2'] == 'Cuckoo':
         valores2 = 'C29AE'
     with open(f'lolminer.bat', 'w+') as myBat:
-        myBat.write(fr'''C:\Users\{user}\Desktop\1.42\lolMiner.exe -a {valores2} -o {valores['server']} -u {valores['wallet']}.{valores['miner']} -p x
+        myBat.write(fr'''{file_location}\lolMiner.exe -a {valores2} -o {valores['server']} -u {valores['wallet']}.{valores['miner']} -p x
         pause ''')
     return subprocess.Popen("start {}".format('lolminer.bat'), shell=True)
 
